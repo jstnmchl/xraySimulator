@@ -2,14 +2,16 @@
 # Naive X-Ray Simulator
 Simulates x-ray images of one or more objects (STL files) created by an x-ray point source and a rectangular x-ray detector. The resulting simulation is visualized in a 3D plot and the resulting x-ray image written as a bitmap file.
 
-X-ray attenuation is modeled according to exponential decay, i.e.:
+This project was originally written over the span of about a week as part of a job application.
 
-I/I_0=exp(-Ax)
+X-ray attenuation is modeled according to exponential decay (Beer-Lambert law), i.e.:
 
-where I_0 and I are, respectively, the initial and attenuated x-ray intensities, x the path length through the material travelled and A the attenuation coefficient of the material. Values in the resulting image correspond to 1-(I/I_0), range of 0-1, inclusive.
+<img src="https://render.githubusercontent.com/render/math?math=\frac{I}{I_0}=e^{-Ax}">
+
+where I<sub>0</sub> and I are, respectively, the initial and attenuated x-ray intensities, x the path length through the material travelled and A the attenuation coefficient of the material. Values in the resulting image correspond to 1-(I/I<sub>0</sub>), range of 0-1, inclusive.
 
 ## Getting Started and Usage
-To install, unzip the supplied file and add the folder 'xraySimulator' to the path. All required functions/libraries are included and automatically added to the path when the simulation is run.
+Clone the repo and add the root folder of the repo to the path. All required functions/libraries are included and automatically added to the path when the simulation is run.
 
 ### Basic syntax:
 ```
@@ -23,7 +25,7 @@ img = xraySimulator('female_pelvis_fixed.stl',1, 'xray.bmp');
  ```getDefaultParams()``` returns a structure containing the default values of various scene parameters. Parameters in the struct may be modified and the structure passed as an argument. Example:
 ```
 myParams = getDefaultParams();
-myParams.phantomToSourceDistance = 40; %Units - cm
+myParams.phantomToSourceDistance = 40; %Units: cm
 img = xraySimulator('female_pelvis_fixed.stl', 1 , 'xray.bmp',myParams);
 ```
 ### Moving/Scaling Objects
@@ -44,7 +46,7 @@ Output image of the above objects/positions with 512x512 detector size included 
 ## Implementation Description
 Intensity at each pixel is modeled by casting a line segment from the x-ray point source to the centre of each pixel. For each object (STL file), path length of the line segment through the object is calculated by finding the intersection points between the line segment and the object, sorting the points by proximity to the source and summing the distance between entrance and exit points (odd and even intersections, respectively). Path length is multiplied by the object's attenuation coefficient and returned as log-attenutation (i.e. A*x in previous equation).
 
-The above process is repeated for all objects and the log-attenuation for each line segment summed. Relative intensity (I/I_0) is calculated and then transformed (1 - I/I_0) to generate pixel intensities.
+The above process is repeated for all objects and the log-attenuation for each line segment summed. Relative intensity (I/I<sub>0</sub>) is calculated and then transformed (1 - I/I<sub>0</sub>) to generate pixel intensities.
 
 X-ray/object intersections are found by testing for intersection of the line segment with all of the triangles in the object (mesh). This is time consuming due to the large number of triangles. For speed, a 3D rectangular bounding box is created around the object and intersection with the bounding box checked first (12 triangles in box vs thousands in typical object). Only line segments that intersect the bounding box are checked for intersection with the object. (For objects above, ~3-4x faster)
 
