@@ -128,7 +128,9 @@ centre = mean(v);
 v = bsxfun(@minus,v,centre);
 
 %rotate
-dcm = angle2dcm(deg2rad(rts(3)),deg2rad(rts(2)),deg2rad(rts(1)), 'ZYX');
+%dcm = angle2dcm(deg2rad(rts(3)),deg2rad(rts(2)),deg2rad(rts(1)), 'ZYX');
+dcm = SpinCalc('EA321toDCM', [rts(3) rts(2) rts(1)]);
+
 v = v*dcm;
 
 %scale
