@@ -92,7 +92,7 @@ scriptFolder = fileparts(mfilename('fullpath'));
 
 oldFolder = cd(scriptFolder);
 
-addpath('stlTools', 'TriangleRayIntersection', 'in_polyhedron', 'textprogressbar') 
+addpath(genpath('3rdParty')) 
 
 cd(oldFolder);
 
