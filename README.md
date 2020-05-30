@@ -2,7 +2,9 @@
 # Naive X-Ray Simulator
 Simulates x-ray images of one or more objects (STL files) created by an x-ray point source and a rectangular x-ray detector. The resulting simulation is visualized in a 3D plot and the resulting x-ray image written as a bitmap file.
 
-This project was originally written over the span of about a week as part of a job application.
+This project was originally written over about a week as the technical assessment for a job application.
+
+![sampleOutput_hipAndProsthesis_Scene](./sampleOutput_hipAndProsthesis_Scene.png)
 
 X-ray attenuation is modeled according to exponential decay (Beer-Lambert law), i.e.:
 
